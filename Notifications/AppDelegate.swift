@@ -7,14 +7,18 @@
 //
 
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+// центр уведомлений/управление уведомлениями
+    
+    let notificationCentre = UNUserNotificationCenter.current()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        requestAutorisation()
         return true
     }
 
@@ -32,6 +36,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
+    // запрос авторизации
+    
+    func requestAutorisation() {
+        notificationCentre.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+            print("Permission grated: \(granted)")
+            
+            guard granted else { return }
+            self.getNotificationSettings()
+        }
+    }
+    
+    // отслеживание настроек по уведомлениям у пользователя
+    
+    func getNotificationSettings() {
+        notificationCentre.getNotificationSettings { (settings) in
+            print("Notification settings: \(settings)")
+        }
+    }
 
 }
 
