@@ -8,8 +8,6 @@
 
 import UIKit
 
-import UIKit
-
 class TableViewController: UITableViewController {
     
     let appDelegate = UIApplication.shared.delegate as? AppDelegate
@@ -22,7 +20,6 @@ class TableViewController: UITableViewController {
                          "Push Notification with Content"]
 
     // MARK: - Table view data source
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return notifications.count
     }
