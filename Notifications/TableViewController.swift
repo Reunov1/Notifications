@@ -20,6 +20,7 @@ class TableViewController: UITableViewController {
                          "Push Notification with Content"]
 
     // MARK: - Table view data source
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return notifications.count
     }
@@ -49,7 +50,6 @@ class TableViewController: UITableViewController {
         let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
             self.appDelegate?.scheduleNotification(notificationTape: notificationType)
         }
-        
         
         alert.addAction(okAction)
         present(alert, animated: true, completion: nil)

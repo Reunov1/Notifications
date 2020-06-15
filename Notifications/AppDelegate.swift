@@ -31,7 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationDidBecomeActive(_ application: UIApplication) {
         UIApplication.shared.applicationIconBadgeNumber = 0
+
     }
+    
 
     // запрос авторизации
     
@@ -57,11 +59,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func scheduleNotification(notificationTape:String) {
         
         let content = UNMutableNotificationContent()
+        let userAction = "User Action"
         
         content.title = notificationTape
         content.body = "This is example how to create" + notificationTape
         content.sound = UNNotificationSound.default
         content.badge = 1
+        content.categoryIdentifier = userAction
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
         
@@ -78,6 +82,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          }
         
         }
+        
+        let snoozeAction = UNNotificationAction(identifier: "Snooze", title: "Smooze", options: [])
+        let deleteAction = UNNotificationAction(identifier: "Delete", title: "Delete", options: [.destructive])
+        let category = UNNotificationCategory(identifier: userAction, actions: [snoozeAction,deleteAction], intentIdentifiers: [], options: [])
+        
+        notificationCenter.setNotificationCategories([category])
 
       }
 }
@@ -99,6 +109,18 @@ extension AppDelegate: UNUserNotificationCenterDelegate {
         
         if response.notification.request.identifier == "Local Notification" {
             print("Handling notification with the Local Notification Identifire")
+        }
+        
+        switch response.actionIdentifier {
+        case UNNotificationDismissActionIdentifier:
+            print("Dismiss Action")
+        case UNNotificationDismissActionIdentifier:
+            print("Default")
+        case "Snooze":
+            print("Snooze")
+            scheduleNotification(notificationTape: "Reminder")
+        default:
+            print("Unknown action")
         }
         
         completionHandler()
