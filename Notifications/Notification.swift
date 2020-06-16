@@ -46,6 +46,21 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
         content.badge = 1
         content.categoryIdentifier = userAction
         
+        // цепляем картинку на уведомления
+        
+        guard let path = Bundle.main.path(forResource: "favicon", ofType: "png") else { return }
+        
+        let url = URL(fileURLWithPath: path)
+        
+        do {
+            let attachment = try UNNotificationAttachment(identifier: "favicon", url: url, options: nil)
+            
+            content.attachments = [attachment]
+        } catch {
+            print("The attachment cold not be loaded")
+        }
+        
+        
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
         
         // дабавляем запрос в центр уведомления
